@@ -89,12 +89,14 @@
 ##   db.exec(sql"INSERT INTO myTable (id, name) VALUES (0, ?)",
 ##           "Dominik")
 ##   ```
-import strutils, postgres
+import strutils, ./postgres
 
-import db_common
+import ./db_common
 export db_common
 
-import std/private/[since, dbutils]
+import private/dbutils
+
+import std/private/[since]
 
 type
   DbConn* = PPGconn    ## encapsulates a database connection

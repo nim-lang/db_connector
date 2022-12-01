@@ -92,11 +92,12 @@
 ##   theDb.close()
 ##   ```
 
-import strutils, odbcsql
-import db_common
+import strutils, ./odbcsql
+import ./db_common
 export db_common
 
-import std/private/[since, dbutils]
+import private/dbutils
+import std/private/[since]
 
 type
   OdbcConnTyp = tuple[hDb: SqlHDBC, env: SqlHEnv, stmt: SqlHStmt]

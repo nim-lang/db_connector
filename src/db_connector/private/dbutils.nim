@@ -1,4 +1,4 @@
-import db_common
+import ../db_common
 
 
 template dbFormatImpl*(formatstr: SqlQuery, dbQuote: proc (s: string): string, args: varargs[string]): string =

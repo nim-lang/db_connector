@@ -85,12 +85,13 @@
 ##   ```
 
 
-import strutils, mysql
+import strutils, ./mysql
 
-import db_common
+import ./db_common
 export db_common
 
-import std/private/[since, dbutils]
+import ./private/dbutils
+import std/private/[since]
 
 type
   DbConn* = distinct PMySQL ## encapsulates a database connection

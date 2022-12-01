@@ -166,12 +166,14 @@
 
 {.experimental: "codeReordering".}
 
-import sqlite3, macros
+import ./sqlite3, macros
 
-import db_common
+import ./db_common
 export db_common
 
-import std/private/[since, dbutils]
+import private/dbutils
+
+import std/private/[since]
 when defined(nimPreviewSlimSystem):
   import std/assertions
 
