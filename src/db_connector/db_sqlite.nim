@@ -7,6 +7,8 @@
 #    distribution, for details about the copyright.
 #
 
+## .. note:: In order to use this module, run `nimble install db_connector`.
+##
 ## A higher level `SQLite`:idx: database wrapper. This interface
 ## is implemented for other databases too.
 ##
@@ -34,7 +36,7 @@
 ## ----------------------------------
 ##
 ##   ```Nim
-##   import std/db_sqlite
+##   import db_connector/db_sqlite
 ##
 ##   # user, password, database name can be empty.
 ##   # These params are not used on db_sqlite module.
@@ -65,7 +67,8 @@
 ## --------------
 ##
 ##   ```Nim
-##   import std/[db_sqlite, math]
+##   import db_connector/db_sqlite
+##   import std/math
 ##
 ##   let db = open("mytest.db", "", "", "")
 ##
