@@ -7,6 +7,8 @@
 #    distribution, for details about the copyright.
 #
 
+## .. note:: In order to use this module, run `nimble install db_connector`.
+##
 ## A higher level `PostgreSQL`:idx: database wrapper. This interface
 ## is implemented for other databases also.
 ##
@@ -67,7 +69,7 @@
 ## ----------------------------------
 ##
 ##   ```Nim
-##   import std/db_postgres
+##   import db_connector/db_postgres
 ##   let db = open("localhost", "user", "password", "dbname")
 ##   db.close()
 ##   ```
