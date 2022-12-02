@@ -7,6 +7,8 @@
 #    distribution, for details about the copyright.
 #
 
+## .. note:: In order to use this module, run `nimble install db_connector`.
+##
 ## A higher level `mySQL`:idx: database wrapper. The same interface is
 ## implemented for other databases too.
 ##
@@ -30,7 +32,7 @@
 ## ----------------------------------
 ##
 ##   ```
-##   import std/db_mysql
+##   import db_connector/db_mysql
 ##   let db = open("localhost", "user", "password", "dbname")
 ##   db.close()
 ##   ```
@@ -57,7 +59,8 @@
 ## --------------
 ##
 ##   ```
-##   import std/[db_mysql, math]
+##   import db_connector/db_mysql
+##   import std/math
 ##
 ##   let theDb = open("localhost", "nim", "nim", "test")
 ##
