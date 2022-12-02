@@ -7,6 +7,8 @@
 #    distribution, for details about the copyright.
 #
 
+## .. note:: In order to use this module, run `nimble install db_connector`.
+##
 ## A higher level `ODBC` database wrapper.
 ##
 ## This is the same interface that is implemented for other databases.
@@ -38,7 +40,7 @@
 ## ----------------------------------
 ##
 ##   ```Nim
-##   import std/db_odbc
+##   import db_connector/db_odbc
 ##   var db = open("localhost", "user", "password", "dbname")
 ##   db.close()
 ##   ```
@@ -65,7 +67,8 @@
 ## -------------
 ##
 ##   ```Nim
-##   import std/[db_odbc, math]
+##   import db_connector/db_odbc
+##   import std/math
 ##
 ##   var theDb = open("localhost", "nim", "nim", "test")
 ##
