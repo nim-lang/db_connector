@@ -7,6 +7,8 @@
 #    distribution, for details about the copyright.
 #
 
+## .. note:: In order to use this module, run `nimble install db_connector`.
+##
 ## Common datatypes and definitions for all `db_*.nim` (
 ## `db_mysql <db_mysql.html>`_, `db_postgres <db_postgres.html>`_,
 ## and `db_sqlite <db_sqlite.html>`_) modules.
