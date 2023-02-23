@@ -187,6 +187,14 @@ type
                       ## text on demand.
   SqlPrepared* = distinct PStmt ## a identifier for the prepared queries
 
+proc bindParam*(ps: SqlPrepared, paramIdx: int, val: int32) {.since: (1, 3).}
+proc bindParam*(ps: SqlPrepared, paramIdx: int, val: int64) {.since: (1, 3).}
+proc bindParam*(ps: SqlPrepared, paramIdx: int, val: int) {.since: (1, 3).}
+proc bindParam*(ps: SqlPrepared, paramIdx: int, val: float64) {.since: (1, 3).}
+proc bindNull*(ps: SqlPrepared, paramIdx: int) {.since: (1, 3).}
+proc bindParam*(ps: SqlPrepared, paramIdx: int, val: string, copy = true) {.since: (1, 3).}
+proc bindParam*(ps: SqlPrepared, paramIdx: int,val: openArray[byte], copy = true) {.since: (1, 3).}
+
 proc dbError*(db: DbConn) {.noreturn.} =
   ## Raises a `DbError` exception.
   ##
@@ -275,6 +283,20 @@ proc exec*(db: DbConn, query: SqlQuery, args: varargs[string, `$`])  {.
 
 macro untypedLen(args: varargs[untyped]): int =
   newLit(args.len)
+
+macro bindParams*(ps: SqlPrepared, params: varargs[untyped]): untyped {.since: (1, 3).} =
+  let bindParam = bindSym("bindParam", brOpen)
+  let bindNull = bindSym("bindNull")
+  let preparedStatement = genSym()
+  result = newStmtList()
+  # Store `ps` in a temporary variable. This prevents `ps` from being evaluated every call.
+  result.add newNimNode(nnkLetSection).add(newIdentDefs(preparedStatement, newEmptyNode(), ps))
+  for idx, param in params:
+    if param.kind != nnkNilLit:
+      result.add newCall(bindParam, preparedStatement, newIntLitNode idx + 1, param)
+    else:
+      result.add newCall(bindNull, preparedStatement, newIntLitNode idx + 1)
+
 
 template exec*(db: DbConn, stmtName: SqlPrepared,
           args: varargs[typed]): untyped =
@@ -843,20 +865,6 @@ proc bindParam*(ps: SqlPrepared, paramIdx: int,val: openArray[byte], copy = true
   let len = val.len
   if bind_blob(ps.PStmt, paramIdx.int32, val[0].unsafeAddr, len.int32, if copy: SQLITE_TRANSIENT else: SQLITE_STATIC) != SQLITE_OK:
     dbBindParamError(paramIdx, val)
-
-macro bindParams*(ps: SqlPrepared, params: varargs[untyped]): untyped {.since: (1, 3).} =
-  let bindParam = bindSym("bindParam", brOpen)
-  let bindNull = bindSym("bindNull")
-  let preparedStatement = genSym()
-  result = newStmtList()
-  # Store `ps` in a temporary variable. This prevents `ps` from being evaluated every call.
-  result.add newNimNode(nnkLetSection).add(newIdentDefs(preparedStatement, newEmptyNode(), ps))
-  for idx, param in params:
-    if param.kind != nnkNilLit:
-      result.add newCall(bindParam, preparedStatement, newIntLitNode idx + 1, param)
-    else:
-      result.add newCall(bindNull, preparedStatement, newIntLitNode idx + 1)
-
 
 when not defined(testing) and isMainModule:
   var db = open(":memory:", "", "", "")
