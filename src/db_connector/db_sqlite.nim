@@ -167,7 +167,6 @@
 ## * `db_mysql module <db_mysql.html>`_ for MySQL database wrapper
 ## * `db_postgres module <db_postgres.html>`_ for PostgreSQL database wrapper
 
-{.experimental: "codeReordering".}
 
 import ./sqlite3, macros
 
@@ -273,6 +272,19 @@ proc exec*(db: DbConn, query: SqlQuery, args: varargs[string, `$`])  {.
   ##     db.close()
   ##   ```
   if not tryExec(db, query, args): dbError(db)
+
+macro untypedLen(args: varargs[untyped]): int =
+  newLit(args.len)
+
+template exec*(db: DbConn, stmtName: SqlPrepared,
+          args: varargs[typed]): untyped =
+  when untypedLen(args) > 0:
+    if reset(stmtName.PStmt) != SQLITE_OK:
+      dbError(db)
+    if clear_bindings(stmtName.PStmt) != SQLITE_OK:
+      dbError(db)
+    stmtName.bindParams(args)
+  if not tryExec(db, stmtName): dbError(db)
 
 proc newRow(L: int): Row =
   newSeq(result, L)
@@ -845,18 +857,6 @@ macro bindParams*(ps: SqlPrepared, params: varargs[untyped]): untyped {.since: (
     else:
       result.add newCall(bindNull, preparedStatement, newIntLitNode idx + 1)
 
-macro untypedLen(args: varargs[untyped]): int =
-  newLit(args.len)
-
-template exec*(db: DbConn, stmtName: SqlPrepared,
-          args: varargs[typed]): untyped =
-  when untypedLen(args) > 0:
-    if reset(stmtName.PStmt) != SQLITE_OK:
-      dbError(db)
-    if clear_bindings(stmtName.PStmt) != SQLITE_OK:
-      dbError(db)
-    stmtName.bindParams(args)
-  if not tryExec(db, stmtName): dbError(db)
 
 when not defined(testing) and isMainModule:
   var db = open(":memory:", "", "", "")
