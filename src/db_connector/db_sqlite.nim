@@ -284,7 +284,6 @@ proc exec*(db: DbConn, query: SqlQuery, args: varargs[string, `$`])  {.
 macro untypedLen(args: varargs[untyped]): int =
   newLit(args.len)
 
-
 macro bindParams*(ps: SqlPrepared, params: varargs[untyped]): untyped {.since: (1, 3).} =
   let bindParam = bindSym("bindParam", brOpen)
   let bindNull = bindSym("bindNull")
@@ -297,6 +296,7 @@ macro bindParams*(ps: SqlPrepared, params: varargs[untyped]): untyped {.since: (
       result.add newCall(bindParam, preparedStatement, newIntLitNode idx + 1, param)
     else:
       result.add newCall(bindNull, preparedStatement, newIntLitNode idx + 1)
+
 
 template exec*(db: DbConn, stmtName: SqlPrepared,
           args: varargs[typed]): untyped =
@@ -865,7 +865,6 @@ proc bindParam*(ps: SqlPrepared, paramIdx: int,val: openArray[byte], copy = true
   let len = val.len
   if bind_blob(ps.PStmt, paramIdx.int32, val[0].unsafeAddr, len.int32, if copy: SQLITE_TRANSIENT else: SQLITE_STATIC) != SQLITE_OK:
     dbBindParamError(paramIdx, val)
-
 
 when not defined(testing) and isMainModule:
   var db = open(":memory:", "", "", "")
