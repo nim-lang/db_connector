@@ -879,7 +879,7 @@ proc loadExtension*(db: DbConn, filename: string, procname = "") =
     if procname != "": procname.cstring
     else: nil
   if load_extension(db, filename.cstring, procname, addr errmsg) != SQLITE_OK:
-    raise (ref DbError(msg: $errmsg))
+    raise (ref DbError)(msg: $errmsg)
 
 when not defined(testing) and isMainModule:
   var db = open(":memory:", "", "", "")
