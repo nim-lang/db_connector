@@ -7,6 +7,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PGHOST: 127.0.0.1
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      POSTGRES_DB: testdb
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd="pg_isready -U postgres -d testdb"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -20,7 +40,13 @@ jobs:
       - name: Install Postgres libraries
         run: |
           sudo apt-get update
-          sudo apt-get install -y libpq-dev
+          sudo apt-get install -y libpq-dev postgresql-client
+
+      - name: Wait for Postgres to be ready
+        run: |
+          for i in {1..60}; do
+            pg_isready -h 127.0.0.1 -p 5432 -U postgres && break || sleep 1
+          done
 
       - name: Run tests
         run: |
