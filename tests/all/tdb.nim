@@ -3,9 +3,9 @@ discard """
 """
 
 
-import db_mysql, db_odbc, db_postgres
+import db_connector / [db_mysql, db_odbc, db_postgres]
 import os
-from stdtest/specialpaths import buildDir
+from utils import buildDir
 
 
 block:
