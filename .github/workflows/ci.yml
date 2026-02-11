@@ -24,4 +24,4 @@ jobs:
 
       - name: Run tests
         run: |
-          testament all
+          nimble tests
