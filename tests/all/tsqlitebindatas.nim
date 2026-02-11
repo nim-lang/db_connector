@@ -1,5 +1,5 @@
 discard """
-  action: "run"
+  action: "compile"
   exitcode: 0
 """
 import ../../src/db_connector/[db_sqlite]
