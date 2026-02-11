@@ -3,7 +3,7 @@ discard """
 """
 
 
-import db_connector / [db_mysql, db_odbc, db_postgres]
+import ../../src/db_connector/[db_mysql, db_odbc, db_postgres]
 import os
 from utils import buildDir
 

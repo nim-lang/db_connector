@@ -1,4 +1,4 @@
-import db_connector / [db_postgres]
+import ../../src/db_connector/[db_postgres]
 import std/strutils
 
 

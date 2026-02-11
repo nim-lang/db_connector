@@ -2,7 +2,7 @@ discard """
   action: "run"
   exitcode: 0
 """
-import db_connector / [db_sqlite]
+import ../../src/db_connector/[db_sqlite]
 import random
 import os
 from utils import buildDir

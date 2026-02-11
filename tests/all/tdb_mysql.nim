@@ -1,4 +1,4 @@
-import db_connector / [db_mysql]
+import ../../src/db_connector/[db_mysql]
 import std/assertions
 
 doAssert dbQuote("SELECT * FROM foo WHERE col1 = 'bar_baz'") == "'SELECT * FROM foo WHERE col1 = \\'bar_baz\\''"
