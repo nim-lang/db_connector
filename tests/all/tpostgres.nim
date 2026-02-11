@@ -1,4 +1,5 @@
-import db_postgres, strutils
+import db_connector / [db_postgres]
+import std/strutils
 
 
 let db = open("localhost", "dom", "", "test")
@@ -51,8 +52,8 @@ try:
 except DbError:
   let msg = getCurrentExceptionMsg().normalize
 
-  info "DbError",
-    msg = $msg
+  # info "DbError",
+  #   msg = $msg
 
   doAssert "no parameter" in msg
   doAssert "$1" in msg

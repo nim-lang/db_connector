@@ -2,10 +2,10 @@ discard """
   action: "run"
   exitcode: 0
 """
-import db_sqlite
+import db_connector / [db_sqlite]
 import random
 import os
-from stdtest/specialpaths import buildDir
+from utils import buildDir
 import std/assertions
 
 block tsqlitebindatas: ## db_sqlite binary data

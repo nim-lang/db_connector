@@ -458,7 +458,7 @@ proc setColumns(columns: var DbColumns; x: PStmt) =
     toTypeKind(columns[i].typ, column_type(x, i))
     columns[i].tableName = $column_table_name(x, i)
 
-iterator instantRows*(db: DbConn; columns: var DbColumns; query: SqlQuery|SqlPrepared;,
+iterator instantRows*(db: DbConn; columns: var DbColumns; query: SqlQuery|SqlPrepared;
                       args: varargs[string, `$`]): InstantRow
                       {.tags: [ReadDbEffect].} =
   ## Similar to `instantRows iterator <#instantRows.i,DbConn,SqlQuery,varargs[string,]>`_,
