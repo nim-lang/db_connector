@@ -12,4 +12,7 @@ srcDir        = "src"
 requires "nim >= 1.7.3"
 
 task tests, "Run all tests":
-  exec "testament all"
+  exec "nim c tests/all/tdb.nim"
+  exec "nim c tests/all/tsqlitebindatas.nim"
+  exec "nim c tests/all/tpostgres.nim"
+  exec "nim c tests/all/tdb_mysql.nim"
